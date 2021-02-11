@@ -16,13 +16,13 @@ import reactor.util.function.Tuple2
 import reactor.util.function.Tuples
 
 @Service
-class DefaultOrderDetailService(
+class OrderDetailService(
     private val orderService: OrderService,
     private val deliveryService: DeliveryService,
     private val placeService: PlaceService,
     private val orderDetailsCacheRepository: OrderDetailsCacheRepository,
     private val logger: Logger
-): OrderDetailService {
+) {
     
     fun getOrdersDetails(ordersId: List<String>): Flux<OrderDetailDTO> {
         
