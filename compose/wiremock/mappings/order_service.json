@@ -1,0 +1,15 @@
+{
+  "priority": 1,
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/orders/([a-zA-Z0-9/-]*)"
+  },
+  "response": {
+    "bodyFileName": "order_service_response.json",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "status": 200,
+    "fixedDelayMilliseconds": 2000
+  }
+}

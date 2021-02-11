@@ -1,0 +1,20 @@
+{
+  "id": "String",
+  "customerId": "String",
+  "placeId": "String",
+  "items": [
+    {
+      "name": "Product Name 2",
+      "id": "String",
+      "quantity": 1,
+      "value": 2.99
+    },
+    {
+      "name": "Product Name 2",
+      "id": "String",
+      "quantity": 1,
+      "value": 5.99
+    }
+  ],
+  "totalValue": 7.99
+}

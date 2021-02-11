@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  wiremock:
+    image: rodolpheche/wiremock
+    ports:
+      - "1080:8080"
+    volumes:
+      - ./wiremock/__files:/home/wiremock/__files
+      - ./wiremock/mappings:/home/wiremock/mappings
+    networks:
+      wiremock_network:
+
+  redis:
+    ports:
+      - "6379:6379"
+    image: redis
+
+networks:
+  wiremock_network:
+    ipam:
+      driver: default
