@@ -16,12 +16,14 @@ class OrderDetailsCacheRepository(
     fun get(key: String): Mono<OrderDetailDTO> {
         
         return redisTemplate.opsForValue().get(key)
+            .publishOn(Schedulers.parallel())
             .doOnSubscribe { logger.info("Getting Order Details from cache. key=${key}") }
             .doOnSuccess { logger.info("Cache data found: $it") }
     }
     
     fun put(key: String, value: OrderDetailDTO): Mono<Boolean> {
         return redisTemplate.opsForValue().set(key, value)
+            .publishOn(Schedulers.parallel())
             .doOnSubscribe { logger.info("Saving Order Details on cache. key=${key}") }
     }
 }
