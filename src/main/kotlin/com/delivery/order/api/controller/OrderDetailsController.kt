@@ -25,6 +25,7 @@ class OrderDetailsController(
         return orderDetailService
             .getOrderDetails(orderId)
             .doOnSubscribe { logger.info("Processing /orders/${orderId} request") }
+            .doOnSuccess { logger.info("Result data: $it") }
     }
     
     @GetMapping(path = ["/orders"])
@@ -33,5 +34,6 @@ class OrderDetailsController(
         
         return orderDetailService.getOrdersDetails(ordersIds)
             .doOnSubscribe { logger.info("Processing /orders/${ordersIds} request") }
+            .doOnNext { logger.info("Result data: $it") }
     }
 }

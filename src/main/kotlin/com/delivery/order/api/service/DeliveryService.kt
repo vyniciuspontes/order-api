@@ -17,7 +17,7 @@ class DeliveryService(private val logger: Logger, private val webClient: WebClie
             .uri("/deliveries/123")
             .retrieve()
             .bodyToMono(DeliveryDTO::class.java)
-            .publishOn(Schedulers.parallel())
+            .publishOn(Schedulers.boundedElastic())
             .doOnSuccess { logger.info("Delivery Request") }
     }
 }

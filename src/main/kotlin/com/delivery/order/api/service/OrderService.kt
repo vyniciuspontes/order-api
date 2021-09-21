@@ -18,7 +18,7 @@ class OrderService(private val logger: Logger, private val webClient: WebClient)
             .uri("/orders/123")
             .retrieve()
             .bodyToMono(OrderDTO::class.java)
-            .publishOn(Schedulers.parallel())
+            .publishOn(Schedulers.boundedElastic())
             .doOnNext { logger.info("Order Request") }
     }
 }

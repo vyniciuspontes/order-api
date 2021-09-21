@@ -17,7 +17,7 @@ class PlaceService(private val logger: Logger, private val webClient: WebClient)
             .uri("/places/123")
             .retrieve()
             .bodyToMono(PlaceDTO::class.java)
-            .publishOn(Schedulers.parallel())
+            .publishOn(Schedulers.boundedElastic())
             .doOnNext { logger.info("Place Request") }
     }
 }
