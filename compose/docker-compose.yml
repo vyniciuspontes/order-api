@@ -9,14 +9,72 @@ services:
       - ./wiremock/__files:/home/wiremock/__files
       - ./wiremock/mappings:/home/wiremock/mappings
     networks:
-      wiremock_network:
+      - order_network
 
   redis:
     ports:
       - "6379:6379"
     image: redis
+    networks:
+      - order_network
+
+
+  order-sqs:
+    container_name: order-sqs
+    image: localstack/localstack
+    ports:
+      - "4599:4599"
+    environment:
+      SERVICES: sqs
+      EDGE_PORT: 4599
+      SQS_PORT_EXTERNAL: 4599
+      COMPOSE_PROJECT_NAME: ORDER_SQS
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    networks:
+      order_network:
+        aliases:
+          - order_network
+    healthcheck:
+      test: "awslocal sqs list-queues && exit 0"
+      interval: 10s
+      timeout: 20s
+      retries: 3
+
+  order-sqs-setup-aws-cli:
+    container_name: order-sqs-setup-aws-cli
+    image: mesosphere/aws-cli
+    volumes:
+      - ./queue-attributes:/tmp/awscli/queue-attributes
+    environment:
+      AWS_ACCESS_KEY_ID: localstack
+      AWS_SECRET_ACCESS_KEY: localstack
+      AWS_DEFAULT_REGION: us-east-1
+    entrypoint: /bin/sh -c
+    command: >
+      "
+        sleep 10s
+
+        echo ''
+        echo '#################################################################'
+        echo '### INICIANDO CRIACAO DO RECURSO DA AWS SQS order-sqs ###'
+        echo '#################################################################'
+        echo ''
+
+        echo 'CRIANDO DLQ order-sqs-dlq'
+        aws --endpoint-url=http://order-sqs:4599 sqs create-queue --queue-name order-sqs-dlq --attributes file:///tmp/awscli/queue-attributes/dlq-attributes.json
+
+        echo 'CRIANDO QUEUE order-sqs'
+        aws --endpoint-url=http://order-sqs:4599 sqs create-queue --queue-name order-sqs --attributes file:///tmp/awscli/queue-attributes/queue-attributes.json
+      "
+    depends_on:
+      - order-sqs
+    networks:
+      order_network:
+        aliases:
+          - order_network
 
 networks:
-  wiremock_network:
+  order_network:
     ipam:
       driver: default
