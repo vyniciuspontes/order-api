@@ -1,4 +1,4 @@
-package com.delivery.order.api.configs
+package com.delivery.order.api.config
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
