@@ -1,0 +1,7 @@
+{
+  "DelaySeconds": "0",
+  "MaximumMessageSize": "10240",
+  "MessageRetentionPeriod": "1209600",
+  "ReceiveMessageWaitTimeSeconds": "20",
+  "VisibilityTimeout": "30"
+}

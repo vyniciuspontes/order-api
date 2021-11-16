@@ -1,7 +1,6 @@
-package com.delivery.order.api.configs
+package com.delivery.order.api.config
 
 import com.delivery.order.api.dto.OrderDetailDTO
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
